@@ -1,6 +1,5 @@
 package com.example.gitdemoapp.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
@@ -8,12 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gitdemoapp.R
 import com.example.gitdemoapp.databinding.MainItemLayoutBinding
 import com.example.model.RepoModel
+import javax.inject.Inject
 
 /**
  * adapter for displaying the
  * unfiltered list of repo's
  **/
-class MainAdapter(private var list: List<RepoModel> , private val ctx: Context): RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
+
+class MainAdapter @Inject constructor(): RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
+
+    private lateinit var list: List<RepoModel>
+
+    fun setList(listParam: List<RepoModel>){
+        list = listParam
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = MainItemLayoutBinding.inflate(LayoutInflater.from(parent.context) , parent , false)

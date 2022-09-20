@@ -3,20 +3,24 @@ package com.example.gitdemoapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProvider
 import com.example.gitdemoapp.adapter.MainAdapter
 import com.example.gitdemoapp.databinding.ActivityMainBinding
 import com.example.gitdemoapp.viewmodel.MainViewModel
 import com.example.model.RepoModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var model: MainViewModel
-    private lateinit var adapter: MainAdapter
+    private val model: MainViewModel by viewModels()
+    @Inject
+    lateinit var adapter: MainAdapter
     private var repoList = ArrayList<RepoModel>()
 
 
@@ -25,11 +29,9 @@ class MainActivity : AppCompatActivity(){
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        model = ViewModelProvider(this)[MainViewModel::class.java]
-
         model.repoList.observe(this){
             repoList = it as ArrayList
-            adapter = MainAdapter(it, this)
+            adapter.setList(repoList)
             binding.mainRecyclerview.adapter = adapter
         }
 
